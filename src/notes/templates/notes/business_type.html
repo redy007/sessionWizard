@@ -1,0 +1,44 @@
+{% extends 'notes\base.html' %}
+
+{% block title %}XXX Step one - {{block.super}} {% endblock %}
+{% block content %}
+<script type="text/javascript">        
+    $(document).ready(function(){
+          $("#business_type-jmeno_zivnosti").keyup(function(){
+              var hledat = $("#business_type-jmeno_zivnosti").val();
+              var jazyk = $("#vybrany_jazyk").val();
+          
+              $.post( "/stranky/vypis.php", { hledany_vyraz: hledat, predany_jazyk: jazyk  },function(data) {
+                $('#vypis').html(data);
+              });
+          });
+    });
+  </script>
+
+<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+{% for field in form %}
+    {{field.error}}
+{% endfor %}
+<form action="/contact/" method="POST">{% csrf_token %}
+    <table>
+        {{ wizard.management_form }}
+        {% if wizard.form.forms %}
+            {{ wizard.form.management_form }}
+            {% for form in wizard.form.forms %}
+                {{ form }}
+            {% endfor %}
+        {% else %}
+            {{ wizard.form }}
+        {% endif %}
+    </table>
+    {% if wizard.steps.prev %}
+        <button formnovalidate="formnovalidate" name="wizard_goto_step" value="{{ wizard.steps.first }}">
+            first step
+        </button>
+        <button formnovalidate="formnovalidate" name="wizard_goto_step" value="{{ wizard.steps.prev }}">
+            prev step
+        </button>
+    {% endif %}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
