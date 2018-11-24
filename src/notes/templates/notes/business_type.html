@@ -2,24 +2,12 @@
 
 {% block title %}XXX Step one - {{block.super}} {% endblock %}
 {% block content %}
-<script type="text/javascript">        
-    $(document).ready(function(){
-          $("#business_type-jmeno_zivnosti").keyup(function(){
-              var hledat = $("#business_type-jmeno_zivnosti").val();
-              var jazyk = $("#vybrany_jazyk").val();
-          
-              $.post( "/stranky/vypis.php", { hledany_vyraz: hledat, predany_jazyk: jazyk  },function(data) {
-                $('#vypis').html(data);
-              });
-          });
-    });
-  </script>
 
 <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
 {% for field in form %}
     {{field.error}}
 {% endfor %}
-<form action="/contact/" method="POST">{% csrf_token %}
+<form id="business_form" data-business-url="{% url 'ajax_load_business' %}" action="/contact/" method="POST">{% csrf_token %}
     <table>
         {{ wizard.management_form }}
         {% if wizard.form.forms %}
@@ -41,4 +29,24 @@
     {% endif %}
     <input type="submit" value="Submit">
 </form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_business_type-typ_zivnosti").change(function () {
+      var url = $("#business_form").attr("data-business-url");
+      var businessId = $(this).val();
+      console.log(businessId);
+      $.ajax({
+        url: url,
+        data: {
+          'business': businessId
+        },
+        success: function (data) {
+          $("#id_business_type-jmeno_zivnosti").html(data);
+          console.log("aaa");
+        }
+      });
+    });
+  </script>
+
 {% endblock %}
