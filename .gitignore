@@ -47,8 +47,16 @@ coverage.xml
 *.log
 *.pot
 migrations/
+<<<<<<< HEAD
+=======
+db.sqlite3
+>>>>>>> 298415173501ced7c6341f7b519e2e69e9685e78
 
 # Sphinx documentation
 docs/_build/
 .gitignore
+<<<<<<< HEAD
 src/notes/migrations/
+=======
+src/db.sqlite3
+>>>>>>> 298415173501ced7c6341f7b519e2e69e9685e78
