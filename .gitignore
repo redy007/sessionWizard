@@ -51,3 +51,4 @@ migrations/
 # Sphinx documentation
 docs/_build/
 .gitignore
+src/notes/migrations/

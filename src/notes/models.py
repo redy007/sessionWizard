@@ -17,6 +17,7 @@ class Rezervace_typy_zivnosti(models.Model):
 
 class Rezervace_zivnosti(models.Model):
     jmeno_zivnosti = models.CharField(max_length=120)
+    typ_zivnosti = models.ForeignKey(Rezervace_typy_zivnosti, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.jmeno_zivnosti
@@ -29,8 +30,8 @@ class Zivnosti(models.Model):
 # do provozniDoby a firmy budes zapisovat data, proto je tam take mas
 class ProvozniDoba(models.Model):
     """docFtring for ProvozniDoba"""
-    den = models.IntegerField( blank=True)
-    otevreno_od = models.TimeField(blank=True,null=True)
+    den = models.IntegerField(blank=True)
+    otevreno_od = models.TimeField(blank=True, null=True)
     otevreno_do = models.TimeField(blank=True, null=True)
     otevreno = models.CharField(max_length=1, default="T")
     firma = models.ForeignKey(Group, related_name='fdoba', on_delete=models.CASCADE)
@@ -38,16 +39,19 @@ class ProvozniDoba(models.Model):
     class Meta:
         unique_together = (('den', 'firma'),)
 
-class Firma(models.Model):
-    """docFtring for firma"""
-    firma = models.ForeignKey(Group, related_name='ffirma', on_delete=models.CASCADE)
-    jmeno_firmy = models.CharField(max_length=100)
+class Contacts_Company(models.Model):
+    """ docFtring for Company's contacts """
     adresa = models.CharField(max_length=100)
     phone = models.CharField(max_length=15, default="+420")
     url = models.CharField(max_length=100)
     geo = models.CharField(max_length=100, blank=True, null=True)
+
+class Firma(models.Model):
+    """docFtring for firma"""
+    firma = models.ForeignKey(Group, related_name='ffirma', on_delete=models.CASCADE)
+    jmeno_firmy = models.CharField(max_length=100)
     mena = models.CharField(max_length=3)
-    kalendar = models.CharField(max_length=1, default="P")
+    kalendar = models.CharField(max_length=1, default="P") # P means Monday as Pondeli, N means Sunday as Nedele
     jazyk = models.CharField(max_length=15)
     widget = models.CharField(max_length=20) # odkaz na widget na disku
     template = models.IntegerField(default=1) # barvy

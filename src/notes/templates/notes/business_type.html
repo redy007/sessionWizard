@@ -35,7 +35,6 @@
     $("#id_business_type-typ_zivnosti").change(function () {
       var url = $("#business_form").attr("data-business-url");
       var businessId = $(this).val();
-      console.log(businessId);
       $.ajax({
         url: url,
         data: {
@@ -43,7 +42,6 @@
         },
         success: function (data) {
           $("#id_business_type-jmeno_zivnosti").html(data);
-          console.log("aaa");
         }
       });
     });

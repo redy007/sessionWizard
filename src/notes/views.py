@@ -17,7 +17,7 @@ TEMPLATES = {"basic_details": "notes/step_one.html",
 
 def load_business_names(request):
     zivnosti_id = request.GET.get('business')
-    zivnost = Rezervace_zivnosti.objects.filter(id=zivnosti_id) \
+    zivnost = Rezervace_zivnosti.objects.filter(typ_zivnosti=zivnosti_id) \
     .order_by('jmeno_zivnosti')
     return render(request, 'notes/notes_business_dropdown_list_options.html', {'zivnosti': zivnost})
 

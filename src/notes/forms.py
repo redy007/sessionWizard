@@ -7,11 +7,10 @@ from .models import Zivnosti, Rezervace_zivnosti
 #session wizard - first step
 class SignUpForm(UserCreationForm):
     email = forms.CharField(max_length=254, required=True, widget=forms.EmailInput())
-    group = forms.CharField(label='Company', min_length=4, max_length=40, required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2', 'group', )
+        fields = ('username', 'email', 'password1', 'password2', )
 
 class Business_type(forms.ModelForm):
     #https://diskuse.jakpsatweb.cz/?action=vthread&forum=8&topic=166005
@@ -24,7 +23,7 @@ class Business_type(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        #self.fields['jmeno_zivnosti'].queryset = Rezervace_zivnosti.objects.none()
+        self.fields['jmeno_zivnosti'].queryset = Rezervace_zivnosti.objects.none()
 
 # jmeno podniku -> navazat z toho co uz mam
 # optional adresa
