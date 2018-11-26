@@ -2,18 +2,24 @@ import logging
 from django.shortcuts import render
 #from django.contrib.auth.models import User, Group
 from formtools.wizard.views import SessionWizardView
-from .forms import SignUpForm, Business_type, ContactForm3
-from .models import Entry
+from .forms import SignUpForm, Business_type, Business_details_form
+from .models import Entry, Rezervace_zivnosti
 
 Logr = logging.getLogger(__name__)
 
 FORMS = [("basic_details", SignUpForm),
          ("business_type", Business_type),
-         ("message", ContactForm3)]
+         ("details", Business_details_form)]
 
 TEMPLATES = {"basic_details": "notes/step_one.html",
              "business_type": "notes/business_type.html",
-             "message": "notes/step_one.html"}
+             "details": "notes/step_one.html"}
+
+def load_business_names(request):
+    zivnosti_id = request.GET.get('business')
+    zivnost = Rezervace_zivnosti.objects.filter(typ_zivnosti=zivnosti_id) \
+    .order_by('jmeno_zivnosti')
+    return render(request, 'notes/notes_business_dropdown_list_options.html', {'zivnosti': zivnost})
 
 # Create your views here.
 def entry_view(request):
@@ -34,9 +40,15 @@ class ContactWizard(SessionWizardView):
         return self.initial_dict.get(step, {})
 
     def done(self, form_list, form_dict, **kwargs):
-        Logr.debug(form_dict[0]['subject'])
-        Logr.debug(form_dict[0]['sender'])
-        Logr.debug(form_dict[0]['message'])
+        #Logr.debug(form_dict[0]['subject'])
+        #Logr.debug(form_dict[0]['sender'])
+        #Logr.debug(form_dict[0]['message'])
+
+        #https://stackoverflow.com/questions/24192896/django-saving-a-form-form-multiple-model
+        #https://stackoverflow.com/questions/26550015/django-save-forms-independently
+        #https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
+        #
+
         return render(self.request, 'notes/done.html', {
             'form_data': [form.cleaned_data for form in form_list],
         })
