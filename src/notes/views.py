@@ -49,6 +49,9 @@ class ContactWizard(SessionWizardView):
         #https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
         #
 
+        print(form_dict['basic_details'])
+
+
         return render(self.request, 'notes/done.html', {
             'form_data': [form.cleaned_data for form in form_list],
         })
