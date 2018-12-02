@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Zivnosti, Rezervace_zivnosti
+from .models import Zivnosti, Rezervace_zivnosti, Firma
 
 
 #session wizard - first step
@@ -34,5 +34,9 @@ class Business_type(forms.ModelForm):
 
 # vytvorim master objekt, ktery bude mit referenci na vsechny podniky pod nim
 
-class Business_details_form(forms.Form):
-    jmeno_firmy = forms.CharField(max_length=80, required=True,)
+class ComanyForm(forms.ModelForm):
+    jmeno_firmy = forms.CharField(max_length=100, required=True)
+
+    class Meta:
+        model = Zivnosti
+        fields = ('jmeno_firmy', )

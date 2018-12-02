@@ -2,18 +2,18 @@ import logging
 from django.shortcuts import render
 #from django.contrib.auth.models import User, Group
 from formtools.wizard.views import SessionWizardView
-from .forms import SignUpForm, Business_type, Business_details_form
-from .models import Entry, Rezervace_zivnosti
+from .forms import SignUpForm, Business_type, ComanyForm
+from .models import Entry, Rezervace_zivnosti, Firma, Zivnosti
 
 Logr = logging.getLogger(__name__)
 
-FORMS = [("basic_details", SignUpForm),
+FORMS = [("basic_company", SignUpForm),
          ("business_type", Business_type),
-         ("details", Business_details_form)]
+         ("company", ComanyForm)]
 
-TEMPLATES = {"basic_details": "notes/step_one.html",
+TEMPLATES = {"basic_company": "notes/step_one.html",
              "business_type": "notes/business_type.html",
-             "details": "notes/step_one.html"}
+             "company": "notes/step_one.html"}
 
 def load_business_names(request):
     zivnosti_id = request.GET.get('business')
@@ -40,18 +40,15 @@ class ContactWizard(SessionWizardView):
         return self.initial_dict.get(step, {})
 
     def done(self, form_list, form_dict, **kwargs):
-        #Logr.debug(form_dict[0]['subject'])
-        #Logr.debug(form_dict[0]['sender'])
-        #Logr.debug(form_dict[0]['message'])
-
-        #https://stackoverflow.com/questions/24192896/django-saving-a-form-form-multiple-model
-        #https://stackoverflow.com/questions/26550015/django-save-forms-independently
-        #https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
-        #
-
-        print(form_dict['basic_details'])
-
+        user = form_dict['basic_company'].save()
+        form_data = [form.cleaned_data for form in form_list]
+        typ_zivnosti = form_data[1]['typ_zivnosti']
+        jmeno_zivnosti = form_data[1]['jmeno_zivnosti']
+        zivnost = Zivnosti.objects.get(jmeno_zivnosti=jmeno_zivnosti, typ_zivnosti=typ_zivnosti)
+        firma = Firma.objects.create(jmeno_firmy=form_data[2]['jmeno_firmy'], \
+        login=user, zivnost=zivnost)
+        firma.save()
 
         return render(self.request, 'notes/done.html', {
-            'form_data': [form.cleaned_data for form in form_list],
+            'form_data': form_data,
         })

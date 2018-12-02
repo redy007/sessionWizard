@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Entry(models.Model):
@@ -27,31 +27,22 @@ class Zivnosti(models.Model):
     typ_zivnosti = models.ForeignKey(Rezervace_typy_zivnosti, on_delete=models.CASCADE, null=True)
     jazyk_zivnosti = models.CharField(max_length=3)
 
-# do provozniDoby a firmy budes zapisovat data, proto je tam take mas
-class ProvozniDoba(models.Model):
-    """docFtring for ProvozniDoba"""
-    den = models.IntegerField(blank=True)
-    otevreno_od = models.TimeField(blank=True, null=True)
-    otevreno_do = models.TimeField(blank=True, null=True)
-    otevreno = models.CharField(max_length=1, default="T")
-    firma = models.ForeignKey(Group, related_name='fdoba', on_delete=models.CASCADE)
+class Contact(models.Model):
+    street = models.CharField(max_length=150)
+    city = models.CharField(max_length=100)
+    phone = models.CharField(max_length=15)
+    web_page = models.CharField(max_length=100)
 
-    class Meta:
-        unique_together = (('den', 'firma'),)
+class Settings(models.Model):
+    currency = models.CharField(max_length=20)
+    # nastaveni kalendare (zacatek v pondeli nebo nedeli)
 
-class Contacts_Company(models.Model):
-    """ docFtring for Company's contacts """
-    adresa = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15, default="+420")
-    url = models.CharField(max_length=100)
-    geo = models.CharField(max_length=100, blank=True, null=True)
 
 class Firma(models.Model):
-    """docFtring for firma"""
-    firma = models.ForeignKey(Group, related_name='ffirma', on_delete=models.CASCADE)
     jmeno_firmy = models.CharField(max_length=100)
-    mena = models.CharField(max_length=3)
-    kalendar = models.CharField(max_length=1, default="P") # P means Monday as Pondeli, N means Sunday as Nedele
-    jazyk = models.CharField(max_length=15)
-    widget = models.CharField(max_length=20) # odkaz na widget na disku
-    template = models.IntegerField(default=1) # barvy
+    login = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    zivnost = models.ForeignKey(Zivnosti, on_delete=models.CASCADE)
+    contact = models.OneToOneField(Contact, on_delete=models.CASCADE)
+    settings = models.OneToOneField(Settings, on_delete=models.CASCADE)
+
+
