@@ -1,0 +1,62 @@
+{% extends 'notes\base.html' %}
+
+{% block content %}
+<p>Fill hours to each input - Monday from 9:00 till 17:00. For example, if you have closed on Sunday's. Don't fill anything there then.
+    <form method="post">
+    {% csrf_token %}
+    <table border="0">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>From</th>
+          <th>Till</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td>Sunday
+            </td>
+            <td><input id="sunday_from" name="sunday_from" value="{{ form.sunday_from|date:'H:i' }}"></td>
+            <td><input id="sunday_to" name="sunday_to" value="{{ form.sunday_to|date:'H:i' }}"></td>
+          </tr>
+          <tr>
+            <td>Monday
+            </td>
+            <td><input id="monday_from" name="monday_from" value="{{ form.monday_from|date:'H:i' }}"></td>
+            <td><input id="monday_to" name="monday_to" value="{{ form.monday_to|date:'H:i' }}"></td>
+          </tr>
+          <tr>
+            <td>Tuesday
+            </td>
+            <td><input id="tuesday_from" name="tuesday_from" value="{{ form.tuesday_from|date:'H:i' }}"></td>
+            <td><input id="tuesday_to" name="tuesday_to" value="{{ form.tuesday_to|date:'H:i' }}"></td>
+          </tr>
+          <tr>
+            <td>Wednesday
+            </td>
+            <td><input id="wednesday_from" name="wednesday_from" value="{{ form.wednesday_from|date:'H:i' }}"></td>
+            <td><input id="wednesday_to" name="wednesday_to" value="{{ form.wednesday_to|date:'H:i' }}"></td>
+          </tr>
+          <tr>
+            <td>Thursday
+            </td>
+            <td><input id="thursday_from" name="thursday_from" value="{{ form.thursday_from|date:'H:i' }}"></td>
+            <td><input id="thursday_to" name="thursday_to" value="{{ form.thursday_to|date:'H:i' }}"></td>
+          </tr>
+          <tr>
+            <td>Friday
+            </td>
+            <td><input id="friday_from" name="friday_from" value="{{ form.friday_from|date:'H:i' }}"></td>
+            <td><input id="friday_to" name="friday_to" value="{{ form.friday_to|date:'H:i' }}"></td>
+          </tr>
+          <tr>
+            <td>Saturday
+            </td>
+            <td><input id="saturday_from" name="saturday_from" value="{{ form.saturday_from|date:'H:i' }}"></td>
+            <td><input id="saturday_to" name="saturday_to" value="{{ form.saturday_to|date:'H:i' }}"></td>
+          </tr>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-success">Post</button>
+    </form>
+{% endblock %}

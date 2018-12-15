@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Zivnosti, Rezervace_zivnosti, Firma
+from .models import Zivnosti, Contact
 
 
 #session wizard - first step
@@ -40,3 +40,24 @@ class ComanyForm(forms.ModelForm):
     class Meta:
         model = Zivnosti
         fields = ('jmeno_firmy', )
+
+class CompanyContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ('street', 'city', 'phone', 'url')
+
+class WorkingHoursForm(forms.Form):
+    nedele_od = forms.DateTimeField(required=False)
+    nedele_do = forms.DateTimeField(required=False)
+    pondeli_od = forms.DateTimeField(required=False)
+    pondeli_do = forms.DateTimeField(required=False)
+    utery_od = forms.DateTimeField(required=False)
+    utery_do = forms.DateTimeField(required=False)
+    streda_od = forms.DateTimeField(required=False)
+    streda_do = forms.DateTimeField(required=False)
+    ctvrtek_od = forms.DateTimeField(required=False)
+    ctvrtek_do = forms.DateTimeField(required=False)
+    patek_od = forms.DateTimeField(required=False)
+    patek_do = forms.DateTimeField(required=False)
+    sobota_od = forms.DateTimeField(required=False)
+    sobota_do = forms.DateTimeField(required=False)
