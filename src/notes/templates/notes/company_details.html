@@ -1,0 +1,40 @@
+{% extends 'notes/base_accounts.html' %}
+
+{% block title %}Log in to Django Boards{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-8">
+      <div class="card">
+        <div class="card-header text-center">
+          Add company datails
+        </div>
+        <div class="card-body">
+          <p class="text-center">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+          <form method="post" action="/contact/">
+            {% csrf_token %}
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+              {{ wizard.form.management_form }}
+              {% include 'notes/includes/form_session_wizarad_view.html' %}
+            {% else %}
+              {% include 'notes/includes/form_session_wizarad_view.html' %}
+            {% endif %}
+            
+            <div class="container">
+                {% if wizard.steps.prev %}
+                    <button class="btn btn-grey" formnovalidate="formnovalidate" name="wizard_goto_step" value="{{ wizard.steps.first }}">
+                        first step
+                    </button>
+                    <button class="btn btn-grey" formnovalidate="formnovalidate" name="wizard_goto_step" value="{{ wizard.steps.prev }}">
+                        prev step
+                    </button>
+                {% endif %}
+                <input type="submit" class="ml-auto btn btn-primary" value="Submit">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

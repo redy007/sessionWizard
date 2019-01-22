@@ -1,4 +1,4 @@
-<option value="">---------</option>
-{% for name in zivnosti %}
-<option value="{{ name.pk }}">{{ name.jmeno_zivnosti }}</option>
-{% endfor %}
+<option value="0">---------</option>
+    {% for name in zivnosti %}
+        <option value="{{ name.pk }}">{{ name.business_name }}</option>
+    {% endfor %}

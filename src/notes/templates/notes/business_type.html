@@ -1,38 +1,48 @@
-{% extends 'notes\base.html' %}
+{% extends 'notes/base_accounts.html' %}
 
-{% block title %}XXX Step one - {{block.super}} {% endblock %}
+{% block title %}Business type - {{block.super}} {% endblock %}
 {% block content %}
-
-<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-{% for field in form %}
-    {{field.error}}
-{% endfor %}
-<form id="business_form" data-business-url="{% url 'ajax_load_business' %}" action="/contact/" method="POST">{% csrf_token %}
-    <table>
-        {{ wizard.management_form }}
-        {% if wizard.form.forms %}
-            {{ wizard.form.management_form }}
-            {% for form in wizard.form.forms %}
-                {{ form }}
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-8">
+      <div class="card">
+        <div class="card-header text-center">
+          Choose a business category
+        </div>
+        <div class="card-body">
+            <p class="text-center">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+            {% for field in form %}
+                {{field.error}}
             {% endfor %}
-        {% else %}
-            {{ wizard.form }}
-        {% endif %}
-    </table>
-    {% if wizard.steps.prev %}
-        <button formnovalidate="formnovalidate" name="wizard_goto_step" value="{{ wizard.steps.first }}">
-            first step
-        </button>
-        <button formnovalidate="formnovalidate" name="wizard_goto_step" value="{{ wizard.steps.prev }}">
-            prev step
-        </button>
-    {% endif %}
-    <input type="submit" value="Submit">
-</form>
+            <form id="business_form" data-business-url="{% url 'ajax_load_business' %}" action="/contact/" method="POST">{% csrf_token %}
+                <table>
+                    {{ wizard.management_form }}
+                    {% if wizard.form.forms %}
+                        {{ wizard.form.management_form }}
+                        {% include 'notes/includes/form_session_wizarad_view.html' %}
+                    {% else %}
+                        {% include 'notes/includes/form_session_wizarad_view.html' %}
+                    {% endif %}
+                </table>
+                <div class="container">
+                    {% if wizard.steps.prev %}
+                        <button class="btn btn-grey" formnovalidate="formnovalidate" name="wizard_goto_step" value="{{ wizard.steps.first }}">
+                            first step
+                        </button>
+                        <button class="btn btn-grey" formnovalidate="formnovalidate" name="wizard_goto_step" value="{{ wizard.steps.prev }}">
+                            prev step
+                        </button>
+                    {% endif %}
+                    <input type="submit" class="ml-auto btn btn-primary" value="Submit">
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-    $("#id_business_type-typ_zivnosti").change(function () {
+    $("#id_business_type-business_category").change(function () {
       var url = $("#business_form").attr("data-business-url");
       var businessId = $(this).val();
       $.ajax({
@@ -41,7 +51,7 @@
           'business': businessId
         },
         success: function (data) {
-          $("#id_business_type-jmeno_zivnosti").html(data);
+          $("#id_business_type-business_name").html(data);
         }
       });
     });

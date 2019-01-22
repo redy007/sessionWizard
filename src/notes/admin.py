@@ -1,9 +1,18 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Entry, Zivnosti, Rezervace_typy_zivnosti, Rezervace_zivnosti
+from .models import Entry, Business, BusinessCategories, BusinessTypes
 
 admin.site.register(Entry)
-admin.site.register(Rezervace_zivnosti)
-admin.site.register(Rezervace_typy_zivnosti)
-admin.site.register(Zivnosti)
+admin.site.register(Business)
+admin.site.register(BusinessTypes)
+
+class InLineBusinessType(admin.TabularInline):
+    model = BusinessTypes
+
+class BusinessCatergoryAdmin(admin.ModelAdmin):
+    inlines = [InLineBusinessType]
+    list_display = ('business_category',)
+    # fields = ('business_category')
+
+admin.site.register(BusinessCategories, BusinessCatergoryAdmin)

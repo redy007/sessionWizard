@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # setup wizard
     'formtools',
+    'widget_tweaks',
     
     # my apps:
     'notes',

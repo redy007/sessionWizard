@@ -9,31 +9,33 @@ class Entry(models.Model):
     def __str__(self):
         return self.title
 
-class Rezervace_typy_zivnosti(models.Model):
-    jmena_typu = models.CharField(max_length=120)
+class BusinessCategories(models.Model):
+    business_category = models.CharField(max_length=120)
 
     def __str__(self):
-        return self.jmena_typu
+        return self.business_category
 
-class Rezervace_zivnosti(models.Model):
-    jmeno_zivnosti = models.CharField(max_length=120)
-    typ_zivnosti = models.ForeignKey(Rezervace_typy_zivnosti, on_delete=models.CASCADE, null=True)
+class BusinessTypes(models.Model):
+    business_name = models.CharField(max_length=120)
+    business_category = models.ForeignKey(BusinessCategories, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.jmeno_zivnosti
+        return self.business_name
 
+class Business(models.Model):
+    business_name = models.ForeignKey(BusinessTypes, on_delete=models.CASCADE, null=True)
+    business_category = models.ForeignKey(BusinessCategories, on_delete=models.CASCADE, null=True)
+    language = models.CharField(max_length=3)
+
+class Settings(models.Model):
+    currency = models.CharField(max_length=20)
+    # nastaveni kalendare (zacatek v pondeli nebo nedeli)
 
 class Company(models.Model):
-    jmeno_firmy = models.CharField(max_length=100)
+    company_name = models.CharField(max_length=100)
     login = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    business = models.ForeignKey(Zivnosti, on_delete=models.CASCADE)
-    contact = models.OneToOneField(Contact, on_delete=models.CASCADE)
+    business = models.ForeignKey(Business, on_delete=models.CASCADE)
     settings = models.OneToOneField(Settings, on_delete=models.CASCADE)
-
-class Zivnosti(models.Model):
-    jmeno_zivnosti = models.ForeignKey(Rezervace_zivnosti, on_delete=models.CASCADE, null=True)
-    typ_zivnosti = models.ForeignKey(Rezervace_typy_zivnosti, on_delete=models.CASCADE, null=True)
-    jazyk_zivnosti = models.CharField(max_length=3)
 
 class Contact(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
@@ -42,14 +44,10 @@ class Contact(models.Model):
     phone = models.CharField(max_length=15)
     url = models.CharField(max_length=100)
 
-class Settings(models.Model):
-    currency = models.CharField(max_length=20)
-    # nastaveni kalendare (zacatek v pondeli nebo nedeli)
-
-class ProvozniDoba(models.Model):
+class OpenHours(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    day = models.IntegerField( blank=True)
-    open_from = models.TimeField(blank=True,null=True)
+    day = models.IntegerField(blank=True)
+    open_from = models.TimeField(blank=True, null=True)
     closed_at = models.TimeField(blank=True, null=True)
     pause_starts = models.TimeField(blank=True, null=True)
     pause_finish = models.TimeField(blank=True, null=True)
