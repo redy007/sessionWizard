@@ -26,7 +26,7 @@ class Business_type(forms.ModelForm):
         if 'business_type-business_category' in self.data:
             try:
                 business_category_id = int(self.data.get('business_type-business_category'))
-                self.fields['business_name'].queryset = BusinessTypes.objects.filter(business_category_id=business_category_id).order_by('business_name')
+                self.fields['business_name'].queryset = BusinessTypes.objects.filter(business_category=business_category_id).order_by('business_name')
             except (ValueError, TypeError):
                 pass  # invalid input from the client; ignore and fallback to empty City queryset
 

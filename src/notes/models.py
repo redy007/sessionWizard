@@ -17,7 +17,7 @@ class BusinessCategories(models.Model):
 
 class BusinessTypes(models.Model):
     business_name = models.CharField(max_length=120)
-    business_category = models.ForeignKey(BusinessCategories, on_delete=models.CASCADE, null=True)
+    business_category = models.ManyToManyField(BusinessCategories, through='Business')
 
     def __str__(self):
         return self.business_name
