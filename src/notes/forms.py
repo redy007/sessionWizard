@@ -38,22 +38,9 @@ class CompanyForm(forms.ModelForm):
         fields = ('company_name', )
 
 class CompanyContactForm(forms.ModelForm):
+    company_name = forms.CharField(disabled=True)
+
     class Meta:
         model = Contact
-        fields = ('street', 'city', 'phone', 'url')
+        fields = ('company_name','street', 'city', 'phone', 'url')
 
-class WorkingHoursForm(forms.Form):
-    sunday_start = forms.DateTimeField(required=False)
-    sunday_ends = forms.DateTimeField(required=False)
-    monday_start = forms.DateTimeField(required=False)
-    monday_ends = forms.DateTimeField(required=False)
-    tuesday_start = forms.DateTimeField(required=False)
-    tuesday_ends = forms.DateTimeField(required=False)
-    wednesday_start = forms.DateTimeField(required=False)
-    wednesday_ends = forms.DateTimeField(required=False)
-    thursday_start = forms.DateTimeField(required=False)
-    thursday_ends = forms.DateTimeField(required=False)
-    friday_start = forms.DateTimeField(required=False)
-    friday_ends = forms.DateTimeField(required=False)
-    saturday_start = forms.DateTimeField(required=False)
-    saturday_ends = forms.DateTimeField(required=False)

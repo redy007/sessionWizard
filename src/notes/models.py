@@ -27,15 +27,11 @@ class Business(models.Model):
     business_category = models.ForeignKey(BusinessCategories, on_delete=models.CASCADE, null=True)
     language = models.CharField(max_length=3)
 
-class Settings(models.Model):
-    currency = models.CharField(max_length=20)
-    # nastaveni kalendare (zacatek v pondeli nebo nedeli)
-
 class Company(models.Model):
     company_name = models.CharField(max_length=100)
     login = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     business = models.ForeignKey(Business, on_delete=models.CASCADE)
-    settings = models.OneToOneField(Settings, on_delete=models.CASCADE)
+    company_uuid = models.UUIDField(null=True, blank=True,)
 
 class Contact(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
